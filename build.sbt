@@ -11,3 +11,4 @@ libraryDependencies += "org.openstreetmap.osmosis" % "osmosis-hstore-jdbc" % "0.
 libraryDependencies += "org.openstreetmap.osmosis" % "osmosis-pgsnapshot" % "0.45"
 libraryDependencies += "org.openstreetmap.osmosis" % "osmosis-pgsimple" % "0.45"
 libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.8.2"
+libraryDependencies += "com.github.pcmehlitz" % "worldwind-pcm" % "2.1.0.+"

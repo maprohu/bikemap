@@ -30,7 +30,7 @@ object RunCreateDb {
 
       quietly { execute(s"create user $UserName superuser password '$Password'") }
       quietly { execute(s"drop database if exists $DatabaseName") }
-      quietly { execute(s"create database $DatabaseName owner $UserName template 'template0' encoding 'UTF8'") }
+      quietly { execute(s"create database $DatabaseName owner $UserName encoding 'UTF8'") }
 
     } finally {
       c.close()
