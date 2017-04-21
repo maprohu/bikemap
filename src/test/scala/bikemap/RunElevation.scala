@@ -8,4 +8,6 @@ object RunElevation {
 
   // http://srtm.csi.cgiar.org/
 
+  // min 60S max 60N
+
 }
