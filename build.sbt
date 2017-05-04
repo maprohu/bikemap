@@ -12,3 +12,5 @@ libraryDependencies += "org.openstreetmap.osmosis" % "osmosis-pgsnapshot" % "0.4
 libraryDependencies += "org.openstreetmap.osmosis" % "osmosis-pgsimple" % "0.45"
 libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.8.2"
 libraryDependencies += "com.github.pcmehlitz" % "worldwind-pcm" % "2.1.0.+"
+libraryDependencies += "com.h2database" % "h2" % "1.4.195"
+libraryDependencies += "org.orbisgis" % "h2gis-ext" % "1.3.1"
