@@ -3,6 +3,8 @@ package bikemap
 import java.io.File
 
 import org.geotools.data.DataStoreFinder
+import org.geotools.filter.AttributeExpressionImpl
+import org.geotools.filter.spatial.BBOXImpl
 import org.opengis.feature.simple.SimpleFeature
 
 import scala.collection.JavaConverters._
@@ -13,17 +15,24 @@ import scala.collection.JavaConverters._
 object RunLandPolygons {
 
   def main(args: Array[String]): Unit = {
-    val file = new File("local/land-polygons-complete-4326/land_polygons.shp")
+    val featureSource = LandPolygons.featureSource
 
-    val connect = Map(
-      "url" -> file.getAbsoluteFile.toURI.toURL
+    val schema = featureSource.getSchema
+    val geomPropertyName = schema.getGeometryDescriptor.getLocalName
+
+    val collection = featureSource.getFeatures(
+      new BBOXImpl(
+        new AttributeExpressionImpl(geomPropertyName),
+        0,
+        0,
+        1,
+        1,
+        ""
+      )
+
     )
-
-    val dataStore = DataStoreFinder.getDataStore(connect.asJava)
-    val typeName = dataStore.getTypeNames.head
-    val featureSource = dataStore.getFeatureSource(typeName)
-    val collection = featureSource.getFeatures
-    val iterator = collection.features()
+    val iterator = collection.features(
+    )
 
     val it = new Iterator[SimpleFeature] {
       override def hasNext: Boolean = iterator.hasNext
