@@ -12,7 +12,8 @@ import org.h2gis.ext.H2GISExtension
   */
 object LandPolygons {
 
-  val ShapeFilePath = "local/land-polygons-complete-4326/land_polygons.shp"
+//  val ShapeFilePath = "local/land-polygons-complete-4326/land_polygons.shp"
+  val ShapeFilePath = "local/land-polygons-split-4326/land_polygons.shp"
   val TableName = "LAND"
 
   def featureSource = {
@@ -48,7 +49,7 @@ object LandPolygons {
     DriverManager.getConnection(s"jdbc:h2:file:./${dbName};LOG=0;CACHE_SIZE=65536;LOCK_MODE=0;UNDO_LOG=0", "sa", "sa")
   }
 
-  def connectH2DbLock(dbName: String) = {
+  def connectH2DbLock(dbName: String = h2Name()) = {
     Driver.load()
     DriverManager.getConnection(s"jdbc:h2:file:./${dbName};LOCK_TIMEOUT=1000000", "sa", "sa")
   }
@@ -75,7 +76,6 @@ object LandPolygons {
       s"CREATE SPATIAL INDEX land_geom_idx ON ${TableName}(the_geom)"
     )
     s.close()
-
     println("indexed")
   }
 
