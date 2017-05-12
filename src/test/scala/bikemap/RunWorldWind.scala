@@ -50,8 +50,9 @@ object RunWorldWind {
         new ZeroElevationModel
       )
 
+    val renderer = new LandPolygonsRenderer
 
-    val map = new TiledImageLayer(
+    val map = new BasicTiledImageLayer(
       {
         val params = new AVListImpl
 
@@ -78,13 +79,28 @@ object RunWorldWind {
         this.getRequestQ.add {
           new Runnable with Comparable[Runnable] {
             override def run(): Unit = {
+              println(tile.getPath)
+
               val img = new BufferedImage(
                 TextureWidth,
                 TextureHeight,
                 BufferedImage.TYPE_INT_ARGB
               )
-
               val g2 = img.createGraphics()
+
+              renderer.synchronized {
+                renderer.draw(
+                  tile.getSector.getMinLongitude.degrees,
+                  tile.getSector.getMinLatitude.degrees,
+                  tile.getSector.getMaxLongitude.degrees,
+                  tile.getSector.getMaxLatitude.degrees,
+                  g2,
+                  TextureWidth,
+                  TextureHeight
+                )
+
+              }
+
               g2.drawString(
                 tile.getLevelNumber.toString,
                 TextureWidth / 2,
