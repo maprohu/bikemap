@@ -52,8 +52,14 @@ object RunWorldWind3 {
     val elevationRetrieverParams = elevationParams.copy()
     val elevationRasterServer = new RasterServer {
       override def getSector: Sector = Sector.FULL_SPHERE
+
+      val reader = ElevationFiles.read
       override def getRasterAsByteBuffer(params: AVList): ByteBuffer = {
-        ???
+        reader.render(
+          params.getValue(AVKey.SECTOR).asInstanceOf[Sector],
+          params.getValue(AVKey.WIDTH).asInstanceOf[Int],
+          params.getValue(AVKey.HEIGHT).asInstanceOf[Int]
+        )
       }
     }
     val elevationRetrieverFactory = new RetrieverFactory() {
