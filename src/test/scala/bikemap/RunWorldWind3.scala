@@ -11,7 +11,7 @@ import gov.nasa.worldwind.awt.WorldWindowGLCanvas
 import gov.nasa.worldwind.data.RasterServer
 import gov.nasa.worldwind.geom.{Angle, LatLon, Sector}
 import gov.nasa.worldwind.globes.{Earth, EllipsoidalGlobe}
-import gov.nasa.worldwind.layers.Earth.BMNGOneImage
+import gov.nasa.worldwind.layers.Earth.{BMNGOneImage, OSMCycleMapLayer, OSMMapnikLayer}
 import gov.nasa.worldwind.layers._
 import gov.nasa.worldwind.layers.mercator.MercatorSector
 import gov.nasa.worldwind.retrieve.{LocalRasterServerRetriever, RetrievalPostProcessor, Retriever, RetrieverFactory}
@@ -87,14 +87,14 @@ object RunWorldWind3 {
 
     import Earth._
     val globe =
-      new Earth
-//      new EllipsoidalGlobe(
-//        WGS84_EQUATORIAL_RADIUS,
-//        WGS84_POLAR_RADIUS,
-//        WGS84_ES,
-//        elevationModel
-////        new ZeroElevationModel
-//      )
+//      new Earth
+      new EllipsoidalGlobe(
+        WGS84_EQUATORIAL_RADIUS,
+        WGS84_POLAR_RADIUS,
+        WGS84_ES,
+        elevationModel
+//        new ZeroElevationModel
+      )
 
     val renderer = new LandPolygonsRenderer
 
@@ -152,17 +152,20 @@ object RunWorldWind3 {
     map.setValue(AVKey.RETRIEVER_FACTORY_LOCAL, retrieverFactory)
     map.setEnabled(true)
 
-    val blueMarble = new BMNGOneImage
+//    val blueMarble = new BMNGOneImage
 
     wwd.setModel(
       new BasicModel(
         globe,
         new LayerList(
           Array[Layer](
-            blueMarble
 //            map
+            new OSMCycleMapLayer()
+//            new OSMMapnikLayer() {
+//              setEnabled(true)
+//            }
 //            osm,
-            , new LatLonGraticuleLayer
+//            , new LatLonGraticuleLayer
           )
         )
       )

@@ -6,8 +6,8 @@ package bikemap
 object RunCreateSchema {
 
   def main(args: Array[String]): Unit = {
-    run("pgsimple_schema_0.6")
-    run("pgsimple_schema_0.6_bbox")
+    run("pgsnapshot_schema_0.6")
+    run("pgsnapshot_schema_0.6_bbox")
   }
 
   def run(script: String): Unit = {

@@ -11,7 +11,7 @@ DROP INDEX idx_nodes_geom;
 DROP INDEX idx_way_nodes_node_id;
 DROP INDEX idx_relation_members_member_id_and_type;
 DROP INDEX idx_ways_bbox;
-DROP INDEX idx_ways_linestring;
+/*DROP INDEX idx_ways_linestring;*/
 
 -- Uncomment these out if bbox or linestring columns are needed and the COPY
 -- files do not include them. If you want these columns you should use the
@@ -65,10 +65,10 @@ UPDATE ways w SET linestring = (
 
 -- Index the way bounding box column. If you don't have one of these columns, comment out the index
 CREATE INDEX idx_ways_bbox ON ways USING gist (bbox);
-CREATE INDEX idx_ways_linestring ON ways USING gist (linestring);
+/*CREATE INDEX idx_ways_linestring ON ways USING gist (linestring);*/
 
 ALTER TABLE ONLY ways CLUSTER ON idx_ways_bbox;
-ALTER TABLE ONLY ways CLUSTER ON idx_ways_linestring;
+/*ALTER TABLE ONLY ways CLUSTER ON idx_ways_linestring;*/
 
 -- Optional: CLUSTER imported tables. CLUSTER takes a significant amount of time to run and a 
 -- significant amount of free disk space but speeds up some queries.

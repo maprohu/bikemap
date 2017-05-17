@@ -48,6 +48,7 @@ object RunCreateDb {
     try {
       println(single("select version()"))
 
+      quietly { execute("CREATE EXTENSION hstore") }
       quietly { execute("CREATE EXTENSION postgis") }
       quietly { execute("CREATE EXTENSION postgis_topology") }
 
