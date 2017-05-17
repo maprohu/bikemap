@@ -5,6 +5,10 @@ package bikemap
   */
 object RunCalculateElevation {
 
+  def log2(v: Int) = {
+    Integer.SIZE - Integer.numberOfLeadingZeros(v-1)
+  }
+
   def nextPowerOfTwo(v: Int) = {
     1 << (Integer.SIZE - Integer.numberOfLeadingZeros(v-1))
   }
@@ -15,6 +19,9 @@ object RunCalculateElevation {
 
     println(s"$lats - $lons")
     println(s"${nextPowerOfTwo(lats)} - ${nextPowerOfTwo(lons)}")
+
+    println(log2(lons))
+
   }
 
 }

@@ -111,13 +111,14 @@ object ElevationFiles {
 
         lats.foreach { lat =>
           val originRow = height - lat.offset - 1
+          val fileRow = files(lat.degree+90)
 
           lons.foreach { lon =>
             val originCol = lon.offset
 
             sb.position(originRow * width + originCol)
 
-            val file = files(lat.degree+90)(lon.degree+180)
+            val file = fileRow(lon.degree+179)
             val reader = openSection(file)
 
             sb.mark()
@@ -135,7 +136,7 @@ object ElevationFiles {
 
                 sb.reset()
                 val newPosition = sb.position() - width
-                if (newPosition > 0) {
+                if (newPosition >= 0) {
                   sb.position(newPosition)
                   sb.mark()
                 }
@@ -239,13 +240,18 @@ object ElevationFiles {
       val wQ2 = x - x1
       val wQ1 = 1 - wQ2
 
+      def readShort : Short = {
+        val s = sb.get()
+        if (s == Short.MinValue) 0 else s
+      }
 
       moveTo(latIdx, lonIdx)
-      val fQ11 = sb.get()
-      val fQ21 = sb.get()
+      val fQ11 = readShort
+      val fQ21 = readShort
       moveTo(latIdx+1, lonIdx)
-      val fQ12 = sb.get()
-      val fQ22 = sb.get()
+      val fQ12 = readShort
+      val fQ22 = readShort
+
 
       val fxy1 = wQ1 * fQ11 + wQ2 * fQ21
       val fxy2 = wQ1 * fQ12 + wQ2 * fQ22

@@ -11,6 +11,7 @@ import gov.nasa.worldwind.awt.WorldWindowGLCanvas
 import gov.nasa.worldwind.data.RasterServer
 import gov.nasa.worldwind.geom.{Angle, LatLon, Sector}
 import gov.nasa.worldwind.globes.{Earth, EllipsoidalGlobe}
+import gov.nasa.worldwind.layers.Earth.BMNGOneImage
 import gov.nasa.worldwind.layers._
 import gov.nasa.worldwind.layers.mercator.MercatorSector
 import gov.nasa.worldwind.retrieve.{LocalRasterServerRetriever, RetrievalPostProcessor, Retriever, RetrieverFactory}
@@ -35,16 +36,21 @@ object RunWorldWind3 {
     val elevationParams = {
       val params = new AVListImpl()
 
-      params.setValue(AVKey.TILE_WIDTH, 1200)
-      params.setValue(AVKey.TILE_HEIGHT, 1200)
+      params.setValue(AVKey.TILE_WIDTH, 150)
+      params.setValue(AVKey.TILE_HEIGHT, 150)
       params.setValue(AVKey.DATA_CACHE_NAME, "Earth/elevation-local")
       params.setValue(AVKey.DISPLAY_NAME, "elevation-local.bil")
       params.setValue(AVKey.DATASET_NAME, "e")
       params.setValue(AVKey.FORMAT_SUFFIX, ".bil")
-      params.setValue(AVKey.NUM_LEVELS, 20)
+      params.setValue(AVKey.NUM_LEVELS, 12)
       params.setValue(AVKey.NUM_EMPTY_LEVELS, 0)
-      params.setValue(AVKey.LEVEL_ZERO_TILE_DELTA, new LatLon(Angle.POS180, Angle.POS360))
+//      params.setValue(AVKey.LEVEL_ZERO_TILE_DELTA, new LatLon(Angle.POS180, Angle.POS180))
+      params.setValue(AVKey.LEVEL_ZERO_TILE_DELTA, new LatLon(Angle.fromDegrees(20), Angle.fromDegrees(20)))
       params.setValue(AVKey.SECTOR, new MercatorSector(-1.0, 1.0, Angle.NEG180, Angle.POS180))
+
+      params.setValue(AVKey.ELEVATION_MIN, -10000.0)
+      params.setValue(AVKey.ELEVATION_MAX, 10000.0)
+//      params.setValue(AVKey.ELEVATION_EXTREMES_FILE, "config/SRTM30Plus_ExtremeElevations_5.bil")
 
       params
     }
@@ -81,13 +87,14 @@ object RunWorldWind3 {
 
     import Earth._
     val globe =
-      new EllipsoidalGlobe(
-        WGS84_EQUATORIAL_RADIUS,
-        WGS84_POLAR_RADIUS,
-        WGS84_ES,
-        elevationModel
-//        new ZeroElevationModel
-      )
+      new Earth
+//      new EllipsoidalGlobe(
+//        WGS84_EQUATORIAL_RADIUS,
+//        WGS84_POLAR_RADIUS,
+//        WGS84_ES,
+//        elevationModel
+////        new ZeroElevationModel
+//      )
 
     val renderer = new LandPolygonsRenderer
 
@@ -145,12 +152,15 @@ object RunWorldWind3 {
     map.setValue(AVKey.RETRIEVER_FACTORY_LOCAL, retrieverFactory)
     map.setEnabled(true)
 
+    val blueMarble = new BMNGOneImage
+
     wwd.setModel(
       new BasicModel(
         globe,
         new LayerList(
           Array[Layer](
-            map
+            blueMarble
+//            map
 //            osm,
             , new LatLonGraticuleLayer
           )
